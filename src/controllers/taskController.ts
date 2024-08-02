@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import Task from "../models/Task"
 import AppError from "../utils/AppError"
-import mongoose from "mongoose"
 import Employee from "../models/Employee"
 import { NOTFoundError } from "../config"
 import taskDurationValidate from "../middleware/taskDurationValiedate"
@@ -45,13 +44,25 @@ export const singleTask = async (
   next: NextFunction
 ) => {
   try {
-    const task = await Task.findById({ _id: req.params.id })
+    const taskId = req.params.id
+    const employeeId = req.body.employee
+
+    const task = await Task.findOne({
+      _id: taskId,
+      employee: employeeId,
+    }).exec()
 
     if (!task) {
       return next(new AppError(NOTFoundError, 404))
     }
 
-    res.status(201).json(task)
+    const existedTask = await Task.findById({ _id: req.params.id })
+
+    if (!existedTask) {
+      return next(new AppError(NOTFoundError, 404))
+    }
+
+    res.status(201).json(existedTask)
   } catch (error) {
     next(new AppError("Failed to found  task", 500))
   }
@@ -63,10 +74,26 @@ export const updateTask = async (
   next: NextFunction
 ) => {
   try {
-    const { from, to, employee } = req.body
+    const { from, to, employee, description } = req.body
+
+    if (!description || !from || !to || !employee) {
+      return next(new AppError("All fields are required", 400))
+    }
+
+    const taskId = req.params.id
+
+    const task = await Task.findOne({
+      _id: taskId,
+      employee: employee,
+    }).exec()
+
+    if (!task) {
+      return next(new AppError(NOTFoundError, 404))
+    }
+
     await taskDurationValidate(from, to, employee)
 
-    const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, {
+    const updatedTask = await Task.findByIdAndUpdate(taskId, req.body, {
       new: true,
       runValidators: true,
     }).exec()

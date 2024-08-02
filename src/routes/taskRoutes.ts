@@ -1,5 +1,10 @@
 import { Router } from "express"
-import { validateTask } from "../middleware/validateRequest"
+import {
+  validateCreateTask,
+  validateDeleteTask,
+  validateSingleTask,
+  validateUpdateTask,
+} from "../middleware/validateRequest"
 import {
   createTask,
   deleteTask,
@@ -9,9 +14,9 @@ import {
 
 const router: Router = Router()
 
-router.post("/", validateTask, createTask)
-router.get("/:id", singleTask)
-router.put("/:id", updateTask)
-router.delete("/:id", deleteTask)
+router.post("/", validateCreateTask, createTask)
+router.get("/:id", validateSingleTask, singleTask)
+router.put("/:id", validateUpdateTask, updateTask)
+router.delete("/:id", validateDeleteTask, deleteTask)
 
 export default router
