@@ -45,7 +45,7 @@ export const singleTask = async (
 ) => {
   try {
     const taskId = req.params.id
-    const employeeId = req.body.employee
+    const employeeId = req.query
 
     const task = await Task.findOne({
       _id: taskId,

@@ -26,7 +26,8 @@ export const getEmployee = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { name } = req.body
+  const { name } = req.query
+  console.log("dd", name)
   try {
     const employee = await Employee.findOne({ name: name })
       .populate("tasks")
