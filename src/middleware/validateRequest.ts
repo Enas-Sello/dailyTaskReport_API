@@ -67,7 +67,7 @@ export const validateSingleTask = [
 export const validateDeleteTask = [
   param("id").isMongoId().withMessage("Invalid Task ID"),
 
-  body("employee").not().isEmpty().withMessage("Employee ID is required"),
+  query("employee").not().isEmpty().withMessage("Employee ID is required"),
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
