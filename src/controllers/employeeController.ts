@@ -26,10 +26,9 @@ export const getEmployee = async (
   res: Response,
   next: NextFunction
 ) => {
+  const { name } = req.query
   try {
-    const employee = await Employee.findOne({ name: name })
-      .populate("tasks")
-      .exec()
+    const employee = await Employee.findOne({ name }).populate("tasks").exec()
     if (!employee) {
       return next(new AppError(NOTFoundError, 404))
     }

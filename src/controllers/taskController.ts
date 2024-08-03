@@ -150,17 +150,14 @@ export const getDailySummary = async (
   next: NextFunction
 ) => {
   const { employeeId, date } = req.params
-  console.log({ employeeId, date })
 
   try {
-    // Convert date to start and end of the day
     const day = new Date(date)
     const startOfDay = new Date(day)
     startOfDay.setHours(0, 0, 0, 0)
     const endOfDay = new Date(day)
     endOfDay.setHours(23, 59, 59, 999)
 
-    // Get all tasks for the employee on the given day
     const tasksForDay = await Task.aggregate([
       {
         $match: {
@@ -176,11 +173,9 @@ export const getDailySummary = async (
       },
     ])
 
-    console.log({ tasksForDay })
-    // Calculate total hours and remaining hours
     const totalDuration =
-      (tasksForDay[0]?.totalDuration || 0) / (1000 * 60 * 60) // total duration in hours
-    const remainingHours = 8 - totalDuration // assuming a max of 8 hours per day
+      (tasksForDay[0]?.totalDuration || 0) / (1000 * 60 * 60) 
+    const remainingHours = 8 - totalDuration
 
     res.status(200).json({
       totalHours: totalDuration,
