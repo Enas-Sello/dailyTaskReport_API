@@ -53,7 +53,7 @@ export const validateUpdateTask = [
 
 export const validateSingleTask = [
   param("id").isMongoId().withMessage("Invalid Task ID"),
-  query("employee").not().isEmpty().withMessage("Employee is required"),
+  query("employeeID").not().isEmpty().withMessage("Employee is required"),
 
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req)
@@ -67,7 +67,7 @@ export const validateSingleTask = [
 export const validateDeleteTask = [
   param("id").isMongoId().withMessage("Invalid Task ID"),
 
-  query("employee").not().isEmpty().withMessage("Employee ID is required"),
+  query("employeeID").not().isEmpty().withMessage("Employee ID is required"),
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {

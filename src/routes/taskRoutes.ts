@@ -8,6 +8,7 @@ import {
 import {
   createTask,
   deleteTask,
+  getDailySummary,
   singleTask,
   updateTask,
 } from "../controllers/taskController"
@@ -18,5 +19,8 @@ router.post("/", validateCreateTask, createTask)
 router.get("/:id", validateSingleTask, singleTask)
 router.put("/:id", validateUpdateTask, updateTask)
 router.delete("/:id", validateDeleteTask, deleteTask)
+
+router.get("/daily-summary/:employeeId/:date", getDailySummary)
+
 
 export default router

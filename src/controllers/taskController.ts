@@ -4,6 +4,7 @@ import AppError from "../utils/AppError"
 import Employee from "../models/Employee"
 import { NOTFoundError } from "../config"
 import taskDurationValidate from "../middleware/taskDurationValiedate"
+import mongoose from "mongoose"
 
 export const createTask = async (
   req: Request,
@@ -115,11 +116,11 @@ export const deleteTask = async (
 ) => {
   try {
     const taskId = req.params.id
-    const employeeId = req.body.employee
+    const { employeeID } = req.query
 
     const task = await Task.findOne({
       _id: taskId,
-      employee: employeeId,
+      employee: employeeID,
     }).exec()
 
     if (!task) {
@@ -128,11 +129,11 @@ export const deleteTask = async (
 
     await Task.findByIdAndDelete({
       _id: taskId,
-      employee: employeeId,
+      employee: employeeID,
     }).exec()
 
     await Employee.findByIdAndUpdate(
-      employeeId,
+      employeeID,
       { $pull: { tasks: taskId } },
       { new: true }
     ).exec()
@@ -140,5 +141,52 @@ export const deleteTask = async (
     res.status(204).send()
   } catch (error) {
     next(new AppError(error as string, 500))
+  }
+}
+
+export const getDailySummary = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { employeeId, date } = req.params
+  console.log({ employeeId, date })
+
+  try {
+    // Convert date to start and end of the day
+    const day = new Date(date)
+    const startOfDay = new Date(day)
+    startOfDay.setHours(0, 0, 0, 0)
+    const endOfDay = new Date(day)
+    endOfDay.setHours(23, 59, 59, 999)
+
+    // Get all tasks for the employee on the given day
+    const tasksForDay = await Task.aggregate([
+      {
+        $match: {
+          employee: new mongoose.Types.ObjectId(employeeId),
+          startTime: { $gte: startOfDay, $lte: endOfDay },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalDuration: { $sum: { $subtract: ["$endTime", "$startTime"] } },
+        },
+      },
+    ])
+
+    console.log({ tasksForDay })
+    // Calculate total hours and remaining hours
+    const totalDuration =
+      (tasksForDay[0]?.totalDuration || 0) / (1000 * 60 * 60) // total duration in hours
+    const remainingHours = 8 - totalDuration // assuming a max of 8 hours per day
+
+    res.status(200).json({
+      totalHours: totalDuration,
+      remainingHours: remainingHours,
+    })
+  } catch (error) {
+    next(new AppError("Failed to get daily summary", 500))
   }
 }
