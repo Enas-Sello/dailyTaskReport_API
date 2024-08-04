@@ -52,7 +52,7 @@ export const validateUpdateTask = [
 ]
 
 export const validateTasks = [
-  param("employeeId").not().isEmpty().withMessage("Employee is required"),
+  param("id").not().isEmpty().withMessage("Employee is required5"),
   query("page").optional().isInt({ min: 1 }).withMessage("Page must be a positive integer"),
   query("limit").optional().isInt({ min: 1 }).withMessage("Limit must be a positive integer"),
 

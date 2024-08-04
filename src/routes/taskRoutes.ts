@@ -16,7 +16,7 @@ import {
 const router: Router = Router()
 
 router.post("/", validateCreateTask, createTask)
-router.get("/:id", getTasks)
+router.get("/:id", validateTasks, getTasks)
 router.put("/:id", validateUpdateTask, updateTask)
 router.delete("/:id", validateDeleteTask, deleteTask)
 
