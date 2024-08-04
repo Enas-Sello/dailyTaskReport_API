@@ -53,7 +53,7 @@ export const getTasks = async (
     const tasks = await Task.find({ employee: employeeId }).exec();
 
     if (!tasks) {
-      return next(new AppError("Tasks not found", 404));
+      return next(new AppError(NOTFoundError, 404));
     }
 
     const paginatedTasks: PaginatedResult<any> = paginate(tasks, page, limit);
@@ -84,7 +84,7 @@ export const updateTask = async (
     }).exec();
 
     if (!task) {
-      return next(new AppError("Task not found", 404));
+      return next(new AppError(NOTFoundError, 404));
     }
 
     await taskDurationValidate(from, to, employee, taskId);

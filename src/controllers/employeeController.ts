@@ -11,7 +11,7 @@ export const createEmployee = async (
   const { name } = req.body
   try {
     if (!name) {
-      return next(new AppError("Name  are required", 400))
+      return next(new AppError("Name  is required", 400))
     }
 
     const newEmployee = await new Employee({ name: name }).save()
