@@ -158,13 +158,13 @@ export const getDailySummary = async (
       {
         $match: {
           employee: new mongoose.Types.ObjectId(employeeId),
-          startTime: { $gte: startOfDay, $lte: endOfDay },
+          from: { $gte: startOfDay, $lte: endOfDay },
         },
       },
       {
         $group: {
           _id: null,
-          totalDuration: { $sum: { $subtract: ["$endTime", "$startTime"] } },
+          totalDuration: { $sum: { $subtract: ["$to", "$from"] } },
         },
       },
     ]);
