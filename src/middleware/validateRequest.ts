@@ -51,9 +51,10 @@ export const validateUpdateTask = [
   },
 ]
 
-export const validateSingleTask = [
-  param("id").isMongoId().withMessage("Invalid Task ID"),
-  query("employeeID").not().isEmpty().withMessage("Employee is required"),
+export const validateTasks = [
+  param("employeeId").not().isEmpty().withMessage("Employee is required"),
+  query("page").optional().isInt({ min: 1 }).withMessage("Page must be a positive integer"),
+  query("limit").optional().isInt({ min: 1 }).withMessage("Limit must be a positive integer"),
 
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req)

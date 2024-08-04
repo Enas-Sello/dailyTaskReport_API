@@ -3,8 +3,9 @@ import Task from "../models/Task";
 import AppError from "../utils/AppError";
 import Employee from "../models/Employee";
 import { NOTFoundError } from "../config";
-import taskDurationValidate from "../middleware/taskDurationValiedate";
 import mongoose from "mongoose";
+import taskDurationValidate from "../utils/taskDurationValiedate";
+import { PaginatedResult, paginate } from "../utils/pagination";
 
 export const createTask = async (
   req: Request,
@@ -39,33 +40,27 @@ export const createTask = async (
   }
 };
 
-export const singleTask = async (
+export const getTasks = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const taskId = req.params.id;
-    const employeeId = req.query;
+    const employeeId = req.params.id;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
 
-    const task = await Task.findOne({
-      _id: taskId,
-      employee: employeeId,
-    }).exec();
+    const tasks = await Task.find({ employee: employeeId }).exec();
 
-    if (!task) {
-      return next(new AppError(NOTFoundError, 404));
+    if (!tasks) {
+      return next(new AppError("Tasks not found", 404));
     }
 
-    const existedTask = await Task.findById({ _id: req.params.id });
+    const paginatedTasks: PaginatedResult<any> = paginate(tasks, page, limit);
 
-    if (!existedTask) {
-      return next(new AppError(NOTFoundError, 404));
-    }
-
-    res.status(201).json(existedTask);
+    res.status(200).json(paginatedTasks);
   } catch (error) {
-    next(new AppError("Failed to found  task", 500));
+    next(new AppError("Failed to retrieve tasks", 500));
   }
 };
 
@@ -105,6 +100,7 @@ export const updateTask = async (
     next(new AppError((error as string) || "Internal Server Error", 500));
   }
 };
+
 export const deleteTask = async (
   req: Request,
   res: Response,
