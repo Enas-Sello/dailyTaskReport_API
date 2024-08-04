@@ -22,6 +22,7 @@ app.use(
   })
 )
 
+app.get("/", (req, res) => res.status(200).send("you are connected "))
 app.use("/api/employees", employeeRoutes)
 app.use("/api/tasks", taskRoutes)
 
@@ -30,6 +31,5 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
 })
 
 app.use(errorHandler)
-
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
