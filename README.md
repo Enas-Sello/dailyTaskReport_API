@@ -2,99 +2,124 @@
 
 This is the backend for the Daily Tasks application, built using Node.js, Express, MongoDB, and TypeScript.
 
-
 ## Prerequisites
 
 - Node.js (version 14.x or later)
 - npm (version 6.x or later)
 - MongoDB (version 4.x or later)
 
+## Environment Variables
 
-### Environment Variables
+Create a `.env` file in the root of your project with the following variables:
 
-CORS_URL= http://localhost:5173
+CORS_URL=http://localhost:5173
 MONGODB_URI=mongodb://127.0.0.1:27017/REPORT
 PORT=8800
-
 
 
 ## Installation
 
 1. Install the dependencies:
- npm install --dev -deps
 
-Create a .env file in the root of your project and add your MongoDB connection string: MONGODB_URI=your-mongodb-connection-string
+    ```bash
+    npm install
+    ```
 
-2. Running the Application
-npm run dev
+2. Create a `.env` file in the root of your project and add your MongoDB connection string. Example:
 
-3. API Endpoints
+    ```
+    MONGODB_URI=your-mongodb-connection-string
+    ```
 
-A. Employees
--- Create Employee
+3. Start the application:
 
-URL: /api/employees
-Method: POST
-Request Body:
+    ```bash
+    npm run dev
+    ```
 
-{
-  "name": "John Doe"
-}
+## API Endpoints
 
--- Get Employee
+### Employees
 
-URL: /api/employees
-Method: get
-Request Body:
+- **Create Employee**
 
-{
-  "name": "John Doe"
-}
+  - **URL:** `/api/employees`
+  - **Method:** POST
+  - **Request Body:**
 
+    ```json
+    {
+      "name": "John Doe"
+    }
+    ```
 
-B. Tasks
+- **Get Employee**
 
--- Create Task
+  - **URL:** `/api/employees`
+  - **Method:** GET
+  - **Request Body:**
 
-URL: /api/tasks
-Method: POST
-Request Body:
-{
-  "description": "Complete the project",
-  "from": "2024-08-01T09:00:00.000Z",
-  "to": "2024-08-01T17:00:00.000Z",
-  "employee": "60c72b2f9b1d8e6d88f3e3d9"
-}
+    ```json
+    {
+      "name": "John Doe"
+    }
+    ```
 
--- Get single Task
+### Tasks
 
-URL: /api/tasks/60c72b2f9b1d8e6d88f3e3d9
-Method: get
-Request Body:
-{
+- **Create Task**
 
-  "employee": "60c72b2f9b1d8e6d88f3e3d9"
-}
+  - **URL:** `/api/tasks`
+  - **Method:** POST
+  - **Request Body:**
 
+    ```json
+    {
+      "description": "Complete the project",
+      "from": "2024-08-01T09:00:00.000Z",
+      "to": "2024-08-01T17:00:00.000Z",
+      "employee": "60c72b2f9b1d8e6d88f3e3d9"
+    }
+    ```
 
--- Update Task
+- **Get Single Task**
 
-URL: /api/tasks/60c72b2f9b1d8e6d88f3e3d9
-Method: put
-Request Body:
-{
-  "description": "Complete the project",
-  "from": "2024-08-01T09:00:00.000Z",
-  "to": "2024-08-01T17:00:00.000Z",
-  "employee": "60c72b2f9b1d8e6d88f3e3d9"
-}
+  - **URL:** `/api/tasks/:id`
+  - **Method:** GET
+  - **Request Params:**
+    
+    ```json
+    {
+      "employee": "60c72b2f9b1d8e6d88f3e3d9"
+    }
+    ```
 
--- delete Task
+- **Update Task**
 
-URL: /api/tasks/60c72b2f9b1d8e6d88f3e3d9
-Method: delete
-Request Body:
-{
+  - **URL:** `/api/tasks/:id`
+  - **Method:** PUT
+  - **Request Body:**
 
-  "employee": "60c72b2f9b1d8e6d88f3e3d9"
-}
+    ```json
+    {
+      "description": "Complete the project",
+      "from": "2024-08-01T09:00:00.000Z",
+      "to": "2024-08-01T17:00:00.000Z",
+      "employee": "60c72b2f9b1d8e6d88f3e3d9"
+    }
+    ```
+
+- **Delete Task**
+
+  - **URL:** `/api/tasks/:id`
+  - **Method:** DELETE
+  - **Request Body:**
+
+    ```json
+    {
+      "employee": "60c72b2f9b1d8e6d88f3e3d9"
+    }
+    ```
+
+Make sure to replace `:id` with the actual task ID for GET, PUT, and DELETE requests.
+
