@@ -22,9 +22,7 @@ app.use(
   })
 )
 
-module.exports = (req: Request, res: Response) => {
-  res.status(200).send("Hello, world!")
-}
+
 app.use("/api/employees", employeeRoutes)
 app.use("/api/tasks", taskRoutes)
 
