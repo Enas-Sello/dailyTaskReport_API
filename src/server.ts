@@ -22,7 +22,9 @@ app.use(
   })
 )
 
-app.get("/", (req, res) => res.status(200).send("you are connected "))
+module.exports = (req: Request, res: Response) => {
+  res.status(200).send("Hello, world!")
+}
 app.use("/api/employees", employeeRoutes)
 app.use("/api/tasks", taskRoutes)
 
