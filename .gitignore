@@ -56,3 +56,4 @@ temp/
 
 # Ignore project specific directories/files
 out/
+.vercel
