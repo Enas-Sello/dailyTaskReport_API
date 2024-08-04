@@ -2,21 +2,21 @@
 
 This is the backend for the Daily Tasks application, built using Node.js, Express, MongoDB, and TypeScript.
 
-## Table of Contents
-
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Running the Application](#running-the-application)
-- [API Endpoints](#api-endpoints)
-- [Error Handling](#error-handling)
-- [License](#license)
 
 ## Prerequisites
 
 - Node.js (version 14.x or later)
 - npm (version 6.x or later)
 - MongoDB (version 4.x or later)
+
+
+### Environment Variables
+
+CORS_URL= http://localhost:5173
+MONGODB_URI=mongodb://127.0.0.1:27017/REPORT
+PORT=8800
+
+
 
 ## Installation
 
@@ -26,8 +26,7 @@ This is the backend for the Daily Tasks application, built using Node.js, Expres
 Create a .env file in the root of your project and add your MongoDB connection string: MONGODB_URI=your-mongodb-connection-string
 
 2. Running the Application
-npx nodemon
-
+npm run dev
 
 3. API Endpoints
 
