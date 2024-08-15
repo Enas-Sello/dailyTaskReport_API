@@ -14,10 +14,10 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser());
 
-// helps attackers exploit known vulnerabilities or craft more targeted exploits.
+// helps prevent attackers exploit known vulnerabilities or craft more targeted exploits.
 app.disable("x-powered-by");
 
-// This can lead to cross-origin information leakage.
+// This can't lead to cross-origin information leakage.
 app.use(
   "/api/employees",
   cors({
